@@ -1,8 +1,4 @@
 <script setup>
-defineProps({
-  modelValue: Boolean,
-});
-
 const emit = defineEmits(["update:modelValue", "upload", "createFolder"]);
 </script>
 <template>
@@ -15,7 +11,7 @@ const emit = defineEmits(["update:modelValue", "upload", "createFolder"]);
       ></div>
     </Transition> -->
     <Transition name="slide-up">
-      <div v-if="modelValue" class="popup-content">
+      <div class="popup-content">
         <div class="button-grid">
           <button onclick="this.lastElementChild.click()">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
