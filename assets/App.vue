@@ -10,7 +10,7 @@
       @upload="onUploadClicked"
       @createFolder="createFolder"
     ></UploadPopup>
-    <button class="upload-button circle" @click="showUploadPopup = true">
+    <!-- <button class="upload-button circle" @click="showUploadPopup = true">
       <img
         style="filter: invert(100%)"
         src="https://cdnjs.cloudflare.com/ajax/libs/material-design-icons/4.0.0/png/file/upload_file/materialicons/36dp/2x/baseline_upload_file_black_36dp.png"
@@ -19,7 +19,7 @@
         height="36"
         @contextmenu.prevent
       />
-    </button>
+    </button> -->
     <div class="app-bar">
       <input type="search" v-model="search" aria-label="Search" />
       <div class="menu-button">
@@ -226,7 +226,7 @@ export default {
     search: "",
     showContextMenu: false,
     showMenu: false,
-    showUploadPopup: false,
+    showUploadPopup: true,
     uploadProgress: null,
     uploadQueue: [],
   }),
