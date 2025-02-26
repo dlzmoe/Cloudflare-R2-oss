@@ -61,7 +61,7 @@ input[type="search"] {
 }
 
 .file-item {
-  height: 64px;
+  height: 50px;
   padding: 8px 0;
   transition: background-color 0.2s ease-in-out;
   display: flex;
@@ -96,6 +96,8 @@ input[type="search"] {
 
 .file-name {
   flex: 1;
+  font-size: 15px;
+  padding-left: 15px;
 }
 
 .file-attr {
