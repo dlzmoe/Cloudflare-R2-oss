@@ -101,12 +101,12 @@
                   : null
               "
             />
-            <div>
-              <div class="file-name" @click="preview(`/raw/${file.key}`)" v-text="file.key.split('/').pop()"></div>
-              <div class="file-attr">
-                <span v-text="new Date(file.uploaded).toLocaleString()"></span>
-                <span v-text="formatSize(file.size)"></span>
-              </div>
+            <div class="file-name" @click="preview(`/raw/${file.key}`)" v-text="file.key.split('/').pop()"></div>
+            <div class="file-attr">
+              <span v-text="new Date(file.uploaded).toLocaleString()"></span>
+            </div>
+            <div class="file-size">
+              <span v-text="formatSize(file.size)"></span>
             </div>
             <div style="margin-right: 10px;margin-left: auto;"
             @click.stop="
