@@ -6,20 +6,9 @@
       max="100"
     ></progress>
     <UploadPopup
-      v-model="showUploadPopup"
       @upload="onUploadClicked"
       @createFolder="createFolder"
     ></UploadPopup>
-    <!-- <button class="upload-button circle" @click="showUploadPopup = true">
-      <img
-        style="filter: invert(100%)"
-        src="https://cdnjs.cloudflare.com/ajax/libs/material-design-icons/4.0.0/png/file/upload_file/materialicons/36dp/2x/baseline_upload_file_black_36dp.png"
-        alt="Upload"
-        width="36"
-        height="36"
-        @contextmenu.prevent
-      />
-    </button> -->
     <div class="app-bar">
       <input type="search" v-model="search" aria-label="Search" />
       <div class="menu-button">
@@ -226,7 +215,6 @@ export default {
     search: "",
     showContextMenu: false,
     showMenu: false,
-    showUploadPopup: true,
     uploadProgress: null,
     uploadQueue: [],
   }),
@@ -268,7 +256,6 @@ export default {
       try {
         const folderName = window.prompt("请输入文件夹名称");
         if (!folderName) return;
-        this.showUploadPopup = false;
         const uploadUrl = `/api/write/items/${this.cwd}${folderName}/_$folder$`;
         await axios.put(uploadUrl, "");
         this.fetchFiles();
@@ -350,7 +337,6 @@ export default {
     onUploadClicked(fileElement) {
       if (!fileElement.value) return;
       this.uploadFiles(fileElement.files);
-      this.showUploadPopup = false;
       fileElement.value = null;
     },
 
