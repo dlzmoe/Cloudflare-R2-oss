@@ -1,54 +1,96 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>文件库</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.2.37/vue.global.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.27.2/axios.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vue3-sfc-loader/dist/vue3-sfc-loader.js"></script>
-    <link rel="prefetch" href="/assets/main.mjs" />
-    <link rel="prefetch" href="/assets/MimeIcon.vue" />
-    <link rel="stylesheet" href="/assets/main.css" />
-    <link rel="manifest" href="/assets/manifest.json" />
-    <link rel="icon" type="image/png" href="/assets/favicon.png" />
-  </head>
-  <body>
-    <div id="app"></div>
-    <script>
-      const { loadModule } = window["vue3-sfc-loader"];
 
-      const options = {
-        moduleCache: { vue: Vue },
-        async getFile(url) {
-          const res = await fetch(url);
-          if (!res.ok)
-            throw Object.assign(new Error(res.statusText + " " + url), { res });
-          return {
-            getContentData: (asBinary) =>
-              asBinary ? res.arrayBuffer() : res.text(),
-          };
-        },
-        addStyle(textContent) {
-          const style = document.createElement("style");
-          style.textContent = textContent;
-          const ref = document.head.getElementsByTagName("style")[0] || null;
-          document.head.insertBefore(style, ref);
-        },
-      };
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>文件库</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.2.37/vue.global.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.27.2/axios.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue3-sfc-loader/dist/vue3-sfc-loader.js"></script>
+  <link rel="prefetch" href="/assets/main.mjs" />
+  <link rel="prefetch" href="/assets/MimeIcon.vue" />
+  <link rel="stylesheet" href="/assets/main.css" />
+  <link rel="manifest" href="/assets/manifest.json" />
+  <link rel="icon" type="image/png" href="/assets/favicon.png" />
+</head>
 
-      const app = Vue.createApp({
-        components: {
-          App: Vue.defineAsyncComponent(() =>
-            loadModule("/assets/App.vue", options)
-          ),
-        },
-        template: "<App></App>",
-      });
+<body>
+  <div id="app"></div>
+  <script>
+    // 定义正确的密码
+    const correctPassword = "500240";
 
-      app.mount("#app");
-    </script>
+    // 限制时间为 5 小时，单位是毫秒
+    const FIVE_HOURS = 5 * 60 * 60 * 1000;
 
-    <script type="module"></script>
-  </body>
+    // 加载页面时执行
+    function checkPassword() {
+      // 从 localStorage 中获取已保存的时间戳和密码
+      const savedPassword = localStorage.getItem('password'); // 已保存的密码
+      const savedTimestamp = localStorage.getItem('timestamp'); // 已保存的时间戳
+      const currentTimestamp = Date.now(); // 当前时间戳
+
+      // 如果不存在密码或时间戳或时间超过限制，则用户需要重新验证
+      if (!savedPassword || !savedTimestamp || currentTimestamp - parseInt(savedTimestamp, 10) > FIVE_HOURS) {
+        // 清除过时的密码和时间戳
+        localStorage.removeItem('password');
+        localStorage.removeItem('timestamp');
+
+        // 提示用户输入密码
+        let userPassword = prompt("请输入密码以继续：");
+
+        // 检验输入的密码
+        if (userPassword === correctPassword) {
+          alert("密码正确，欢迎进入！");
+          localStorage.setItem('password', userPassword); // 保存密码到 localStorage
+          localStorage.setItem('timestamp', Date.now()); // 保存当前时间戳
+        } else {
+          alert("密码错误，访问被拒绝！");
+          location.reload(); // 密码错误时刷新页面
+        }
+      } else {
+        // 如果密码未过期，直接显示受保护内容
+      }
+    }
+
+    // 页面加载时运行密码检查函数
+    checkPassword();
+
+    const { loadModule } = window["vue3-sfc-loader"];
+
+    const options = {
+      moduleCache: { vue: Vue },
+      async getFile(url) {
+        const res = await fetch(url);
+        if (!res.ok)
+          throw Object.assign(new Error(res.statusText + " " + url), { res });
+        return {
+          getContentData: (asBinary) =>
+            asBinary ? res.arrayBuffer() : res.text(),
+        };
+      },
+      addStyle(textContent) {
+        const style = document.createElement("style");
+        style.textContent = textContent;
+        const ref = document.head.getElementsByTagName("style")[0] || null;
+        document.head.insertBefore(style, ref);
+      },
+    };
+
+    const app = Vue.createApp({
+      components: {
+        App: Vue.defineAsyncComponent(() =>
+          loadModule("/assets/App.vue", options)
+        ),
+      },
+      template: "<App></App>",
+    });
+
+    app.mount("#app");
+  </script>
+
+  <script type="module"></script>
+</body>
+
 </html>
